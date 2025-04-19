@@ -53,7 +53,7 @@ def new_logic():
 
     analyzer["crimes"] = al.new_list()
     analyzer["dateIndex"] = rbt.new_map()
-    # TODO Crear el índice ordenado por áreas reportadas
+    analyzer["areaIndex"] = rbt.new_map()
     return analyzer
 
 # Funciones para realizar la carga
@@ -80,7 +80,7 @@ def add_crime(analyzer, crime):
     """
     al.add_last(analyzer['crimes'], crime)
     update_date_index(analyzer['dateIndex'], crime)
-    # TODO Actualizar el indice por areas reportadas
+    update_area_index(analyzer['areaIndex'], crime)  # Actualizamos el índice por áreas
 
     return analyzer
 
@@ -196,53 +196,52 @@ def min_key(analyzer):
     """
     Llave mas pequena
     """
-    return rbt.left_key(analyzer["dateIndex"])
+    return rbt.get_min(analyzer["dateIndex"])
 
 
 def max_key(analyzer):
     """
     Llave mas grande
     """
-    return rbt.right_key(analyzer["dateIndex"])
+    return rbt.get_max(analyzer["dateIndex"])
 
 
 def index_height_areas(analyzer):
     """
     Altura del arbol por areas
     """
-    # TODO Retornar la altura del árbol por areas
-    pass
+    return rbt.height(analyzer["areaIndex"])
 
 
 def index_size_areas(analyzer):
     """
     Numero de elementos en el indice por areas
     """
-    # TODO Retornar el numero de elementos en el árbol por areas
-    pass
+    return rbt.size(analyzer["areaIndex"])
 
 
 def min_key_areas(analyzer):
     """
     Llave mas pequena por areas
     """
-    # TODO Retornar la llave más pequeña del árbol por áreas
-    pass
+    return rbt.left_key(analyzer["areaIndex"])
 
 
 def max_key_areas(analyzer):
     """
     Llave mas grande por areas
     """
-    # TODO Retornar la llave más grande del árbol por áreas
-    pass
+    return rbt.right_key(analyzer["areaIndex"])
 
 def get_crimes_by_range_area(analyzer, initialArea, finalArea):
     """
     Retorna el numero de crimenes en un rango de areas
     """
-    # TODO Completar la consulta de crimenes por rango de areas
+    lst = rbt.keys(analyzer["areaIndex"], initialArea, finalArea)
     totalcrimes = 0
+    for area in lst["elements"]:
+        # Por cada área, sumamos los crímenes asociados a esa área
+        totalcrimes += al.size(area["lstoffenses"])
     return totalcrimes
 
 def get_crimes_by_range(analyzer, initialDate, finalDate):

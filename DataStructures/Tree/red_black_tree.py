@@ -41,8 +41,9 @@ def flip_colors(node_rbt):
 
 def put(my_rbt, key, value):
     my_rbt['root'] = insert_node(my_rbt['root'], key, value)
-    node.change_color(my_rbt['root'], node.BLACK)
+    my_rbt['root']['color'] = BLACK  # Asegura que la raíz siempre sea negra
     return my_rbt
+
 
 def insert_node(root, key, value):
     if root is None:
@@ -90,18 +91,13 @@ def rotate_right(h):
     return x
 
 
-def flip_colors(h):
-    node.change_color(h, node.RED)
-    node.change_color(h['left'], node.BLACK)
-    node.change_color(h['right'], node.BLACK)
-
 def size(my_rbt):
     return size_tree(my_rbt['root']) if my_rbt['root'] else 0
 
 def size_tree(root):
     if root is None:
         return 0
-    root['size'] = 1 + size_tree(root['left']) + size_tree(root['right'])
+    return 1 + size_tree(root['left']) + size_tree(root['right'])
 
 
 def get_node(root, key):
