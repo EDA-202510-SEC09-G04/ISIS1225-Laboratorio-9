@@ -91,13 +91,21 @@ def update_area_index(map, crime):
     si el area es nueva, se crea una entrada para el indice y se adiciona
     y si el area son ["", " ", None] se utiliza el valor por defecto 9999
     """
-    # TODO Implementar actualizacion del indice por areas reportadas
-    # revisar si el area es un str vacio ["", " ", None]
-    # area desconocida es 9999
-
-    # revisar si el area ya esta en el indice
-
-    # si el area ya esta en el indice, adicionar el crimen a la lista
+   
+    
+    area = crime.get('AREA',"").strip()
+    if area in ["",None]:
+        area = "9999"
+        
+    
+    entry = rbt.get(map,area)    
+    
+    if entry is None:
+        entry = {"lstoffenses": al.new_list()}
+        rbt.put(map,area,entry)
+    
+    
+    al.add_last(entry['lstoffenses'],crime)
     return map
 
 
